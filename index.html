@@ -76,16 +76,28 @@
             height: 300px;
             position: relative;
         }
+        /* Updated KPI section for horizontal layout */
         .key-metrics {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        .metric-cards {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .metric-card {
+            flex: 1;
+            min-width: 150px;
             padding: 15px;
             background-color: #f9f9f9;
             border-radius: 6px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .metric-value {
             font-size: 24px;
@@ -109,6 +121,9 @@
         @media (max-width: 768px) {
             .dashboard-grid {
                 grid-template-columns: 1fr;
+            }
+            .metric-cards {
+                flex-direction: column;
             }
         }
     </style>
@@ -166,6 +181,11 @@
                     <p>Free Cash Flow</p>
                     <div class="metric-value">€0.63B</div>
                     <div class="trend-down">↓ 2.3%</div>
+                </div>
+                <div class="metric-card">
+                    <p>Order Intake</p>
+                    <div class="metric-value">€11.7B</div>
+                    <div class="trend-up">↑ 3.2%</div>
                 </div>
             </div>
         </div>
@@ -255,7 +275,7 @@
     <footer>
         <div class="container">
             <p>Data source: KION GROUP Financial Reports | Last updated: April 2025</p>
-            <p>This dashboard displays placeholder data for demonstration purposes.</p>
+            <p>This dashboard displays placeholder data for demonstration purposes. Replace with actual KION GROUP data before deployment.</p>
         </div>
     </footer>
 
@@ -449,7 +469,7 @@
 
         function updateDashboard() {
             // This would normally update the dashboard with new data based on selections
-            // For demo purposes, I'll just show an alert
+            // For demo purposes, we'll just show an alert
             const timePeriod = document.getElementById('time-period').value;
             const dataType = document.getElementById('data-type').value;
             
