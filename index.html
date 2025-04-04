@@ -76,34 +76,80 @@
             height: 300px;
             position: relative;
         }
-        /* Updated KPI section for horizontal layout */
+        
+        /* Completely redesigned KPI section */
+        .key-metrics-container {
+            margin-bottom: 20px;
+        }
+        .key-metrics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .key-metrics-header h2 {
+            margin: 0;
+            color: #004996;
+        }
+        .key-metrics-header select {
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
         .key-metrics {
             display: flex;
-            flex-direction: column;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding: 5px 0;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #004996 #f0f0f0;
         }
-        .metric-cards {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
+        .key-metrics::-webkit-scrollbar {
+            height: 6px;
+        }
+        .key-metrics::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+        .key-metrics::-webkit-scrollbar-thumb {
+            background-color: #004996;
+            border-radius: 10px;
         }
         .metric-card {
-            flex: 1;
-            min-width: 150px;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border-radius: 6px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            flex: 0 0 auto;
+            width: 200px;
+            margin-right: 15px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid #004996;
+        }
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .metric-card:last-child {
+            margin-right: 0;
+        }
+        .metric-title {
+            font-size: 14px;
+            color: #777;
+            margin: 0 0 10px 0;
         }
         .metric-value {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 28px;
+            font-weight: 600;
             color: #004996;
-            margin: 10px 0;
+            margin: 0 0 5px 0;
+        }
+        .metric-trend {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
         }
         .trend-up {
             color: #28a745;
@@ -111,6 +157,11 @@
         .trend-down {
             color: #dc3545;
         }
+        .trend-icon {
+            margin-right: 5px;
+            font-size: 16px;
+        }
+        
         footer {
             text-align: center;
             margin-top: 30px;
@@ -122,8 +173,8 @@
             .dashboard-grid {
                 grid-template-columns: 1fr;
             }
-            .metric-cards {
-                flex-direction: column;
+            .metric-card {
+                width: 180px;
             }
         }
     </style>
@@ -159,33 +210,58 @@
             </div>
         </div>
 
-        <div class="key-metrics card">
-            <h2>Key Performance Indicators</h2>
-            <div class="metric-cards">
+        <!-- Redesigned KPI section -->
+        <div class="key-metrics-container">
+            <div class="key-metrics-header">
+                <h2>Key Performance Indicators</h2>
+                <select id="kpi-year" onchange="updateKPIs()">
+                    <option value="2023" selected>2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                </select>
+            </div>
+            <div class="key-metrics">
                 <div class="metric-card">
-                    <p>Revenue</p>
-                    <div class="metric-value">€11.4B</div>
-                    <div class="trend-up">↑ 5.3%</div>
+                    <p class="metric-title">Revenue</p>
+                    <p class="metric-value">€11.4B</p>
+                    <div class="metric-trend trend-up">
+                        <span class="trend-icon">▲</span> 5.3% vs prior year
+                    </div>
                 </div>
                 <div class="metric-card">
-                    <p>EBIT</p>
-                    <div class="metric-value">€0.82B</div>
-                    <div class="trend-up">↑ 7.1%</div>
+                    <p class="metric-title">EBIT</p>
+                    <p class="metric-value">€0.82B</p>
+                    <div class="metric-trend trend-up">
+                        <span class="trend-icon">▲</span> 7.1% vs prior year
+                    </div>
                 </div>
                 <div class="metric-card">
-                    <p>EBIT Margin</p>
-                    <div class="metric-value">7.2%</div>
-                    <div class="trend-up">↑ 0.2pp</div>
+                    <p class="metric-title">EBIT Margin</p>
+                    <p class="metric-value">7.2%</p>
+                    <div class="metric-trend trend-up">
+                        <span class="trend-icon">▲</span> 0.2pp vs prior year
+                    </div>
                 </div>
                 <div class="metric-card">
-                    <p>Free Cash Flow</p>
-                    <div class="metric-value">€0.63B</div>
-                    <div class="trend-down">↓ 2.3%</div>
+                    <p class="metric-title">Free Cash Flow</p>
+                    <p class="metric-value">€0.63B</p>
+                    <div class="metric-trend trend-down">
+                        <span class="trend-icon">▼</span> 2.3% vs prior year
+                    </div>
                 </div>
                 <div class="metric-card">
-                    <p>Order Intake</p>
-                    <div class="metric-value">€11.7B</div>
-                    <div class="trend-up">↑ 3.2%</div>
+                    <p class="metric-title">Order Intake</p>
+                    <p class="metric-value">€11.7B</p>
+                    <div class="metric-trend trend-up">
+                        <span class="trend-icon">▲</span> 3.2% vs prior year
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <p class="metric-title">Net Income</p>
+                    <p class="metric-value">€0.62B</p>
+                    <div class="metric-trend trend-up">
+                        <span class="trend-icon">▲</span> 8.8% vs prior year
+                    </div>
                 </div>
             </div>
         </div>
@@ -301,6 +377,33 @@
             values: [58, 30, 12]
         };
 
+        const kpiData = {
+            "2023": {
+                revenue: { value: "€11.4B", change: "5.3%", trend: "up" },
+                ebit: { value: "€0.82B", change: "7.1%", trend: "up" },
+                ebitMargin: { value: "7.2%", change: "0.2pp", trend: "up" },
+                fcf: { value: "€0.63B", change: "2.3%", trend: "down" },
+                orderIntake: { value: "€11.7B", change: "3.2%", trend: "up" },
+                netIncome: { value: "€0.62B", change: "8.8%", trend: "up" }
+            },
+            "2022": {
+                revenue: { value: "€10.9B", change: "5.8%", trend: "up" },
+                ebit: { value: "€0.76B", change: "5.6%", trend: "up" },
+                ebitMargin: { value: "7.0%", change: "0.0pp", trend: "neutral" },
+                fcf: { value: "€0.65B", change: "10.2%", trend: "up" },
+                orderIntake: { value: "€11.3B", change: "2.6%", trend: "up" },
+                netIncome: { value: "€0.57B", change: "5.6%", trend: "up" }
+            },
+            "2021": {
+                revenue: { value: "€10.3B", change: "9.1%", trend: "up" },
+                ebit: { value: "€0.72B", change: "7.5%", trend: "up" },
+                ebitMargin: { value: "7.0%", change: "-0.1pp", trend: "down" },
+                fcf: { value: "€0.59B", change: "5.4%", trend: "up" },
+                orderIntake: { value: "€11.0B", change: "16.5%", trend: "up" },
+                netIncome: { value: "€0.54B", change: "10.2%", trend: "up" }
+            }
+        };
+
         // Initialize charts
         document.addEventListener('DOMContentLoaded', function() {
             createRevenueChart();
@@ -308,6 +411,53 @@
             createSegmentChart();
             createRegionChart();
         });
+
+        function updateKPIs() {
+            const year = document.getElementById('kpi-year').value;
+            const data = kpiData[year];
+            
+            if (!data) return;
+            
+            const metricCards = document.querySelectorAll('.metric-card');
+            
+            // Update Revenue KPI
+            updateKPICard(metricCards[0], "Revenue", data.revenue);
+            
+            // Update EBIT KPI
+            updateKPICard(metricCards[1], "EBIT", data.ebit);
+            
+            // Update EBIT Margin KPI
+            updateKPICard(metricCards[2], "EBIT Margin", data.ebitMargin);
+            
+            // Update Free Cash Flow KPI
+            updateKPICard(metricCards[3], "Free Cash Flow", data.fcf);
+            
+            // Update Order Intake KPI
+            updateKPICard(metricCards[4], "Order Intake", data.orderIntake);
+            
+            // Update Net Income KPI
+            updateKPICard(metricCards[5], "Net Income", data.netIncome);
+        }
+        
+        function updateKPICard(card, title, data) {
+            const valueEl = card.querySelector('.metric-value');
+            const trendEl = card.querySelector('.metric-trend');
+            
+            valueEl.textContent = data.value;
+            
+            // Update trend
+            trendEl.className = `metric-trend trend-${data.trend}`;
+            
+            // Update arrow and text
+            let trendIcon = "▲";
+            if (data.trend === "down") {
+                trendIcon = "▼";
+            } else if (data.trend === "neutral") {
+                trendIcon = "●";
+            }
+            
+            trendEl.innerHTML = `<span class="trend-icon">${trendIcon}</span> ${data.change} vs prior year`;
+        }
 
         function createRevenueChart() {
             const ctx = document.getElementById('revenue-chart').getContext('2d');
